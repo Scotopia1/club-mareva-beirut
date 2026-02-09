@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Category = 'All' | 'Events' | 'News' | 'Mareva Malt Mavericks Tastings';
+type Category = 'All' | 'Events' | 'News';
 
 export interface PostItem {
   id: number;
@@ -22,7 +22,7 @@ interface NewsEventsClientProps {
   posts: PostItem[];
 }
 
-const categories: Category[] = ['All', 'Events', 'News', 'Mareva Malt Mavericks Tastings'];
+const categories: Category[] = ['All', 'Events', 'News'];
 
 export default function NewsEventsClient({ posts }: NewsEventsClientProps) {
   const [activeCategory, setActiveCategory] = useState<Category>('All');

@@ -1,0 +1,16 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "login": "jasoneldebs",
+      "email": "jasoneldebs@gmail.com",
+      "display_name": "jasoneldebs"
+    },
+    {
+      "id": 2,
+      "login": "wghsoubi",
+      "email": "wghsoubi@gmail.com",
+      "display_name": "Woody Ghsoubi"
+    }
+  ]
+}

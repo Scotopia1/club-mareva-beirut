@@ -1,10 +1,10 @@
 import { readdir, readFile } from 'fs/promises';
 import { join } from 'path';
 
-const MIGRATION_BASE = '/home/scotopia/Documents/The-Elites/partnerships/club-mareva-beirut/migration';
-const POSTS_DIR = join(MIGRATION_BASE, 'posts');
-const PAGES_DIR = join(MIGRATION_BASE, 'pages');
-const METADATA_DIR = join(MIGRATION_BASE, 'metadata');
+const DATA_BASE = join(process.cwd(), 'data');
+const POSTS_DIR = join(DATA_BASE, 'posts');
+const PAGES_DIR = join(DATA_BASE, 'pages');
+const METADATA_DIR = join(DATA_BASE, 'metadata');
 
 export interface Author {
   id: number;

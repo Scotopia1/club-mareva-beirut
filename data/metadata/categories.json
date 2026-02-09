@@ -1,0 +1,34 @@
+{
+  "categories": [
+    {
+      "id": 32,
+      "name": "Events",
+      "slug": "events",
+      "parent": null
+    },
+    {
+      "id": 33,
+      "name": "International Events",
+      "slug": "international-events",
+      "parent": "events"
+    },
+    {
+      "id": 34,
+      "name": "Mareva Malt Mavericks Tastings",
+      "slug": "mareva-malt-mavericks-tastings",
+      "parent": "events"
+    },
+    {
+      "id": 16,
+      "name": "News",
+      "slug": "news",
+      "parent": null
+    },
+    {
+      "id": 1,
+      "name": "Uncategorized",
+      "slug": "uncategorized",
+      "parent": null
+    }
+  ]
+}

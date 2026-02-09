@@ -5,7 +5,6 @@ import BrandShowcase from "@/components/sections/BrandShowcase";
 import EventsCarousel from "@/components/sections/EventsCarousel";
 import Story from "@/components/sections/Story";
 import Amenities from "@/components/sections/Amenities";
-import AgeVerification from "@/components/AgeVerification";
 import CTASection from "@/components/sections/CTASection";
 
 export default async function Home() {
@@ -29,7 +28,6 @@ export default async function Home() {
 
   return (
     <main>
-      <AgeVerification />
       <Hero />
       <EventsCarousel events={events} />
       <BrandShowcase />
