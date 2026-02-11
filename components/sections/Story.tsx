@@ -76,7 +76,7 @@ export default function Story() {
       {/* Parallax Background with video option */}
       <motion.div
         style={{ y, opacity }}
-        className="absolute inset-0 -z-10"
+        className="absolute -inset-y-[20%] inset-x-0 -z-10"
       >
         {/* Background image */}
         <div className="absolute inset-0">

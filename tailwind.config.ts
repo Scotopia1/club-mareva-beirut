@@ -29,9 +29,9 @@ const config: Config = {
           dark: '#B8941F',
         },
         green: {
-          DEFAULT: '#004225',
-          light: '#046A38',
-          dark: '#003018',
+          DEFAULT: '#27533e',
+          light: '#3a7a58',
+          dark: '#1c3d2d',
         },
         cream: '#F5F5F0',
       },

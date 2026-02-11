@@ -20,7 +20,7 @@ const brands = [
 
 function LogoItem({ brand }: { brand: { name: string; logo: string } }) {
   return (
-    <div className="flex-shrink-0 mx-8 bg-white/10 rounded-md p-2 transition-all duration-300 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105">
+    <div className="flex-shrink-0 mx-8">
       <Image
         src={brand.logo}
         alt={brand.name}
@@ -39,7 +39,7 @@ function StaticLogoGrid() {
       {brands.map((brand) => (
         <div
           key={brand.name}
-          className="transition-all duration-300 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105"
+          className=""
         >
           <Image
             src={brand.logo}
@@ -62,10 +62,10 @@ export default function BrandShowcase() {
     <section
       ref={sectionRef}
       className="relative py-8 md:py-12 overflow-hidden"
-      style={{ backgroundColor: '#006039' }}
+      style={{ backgroundColor: '#27533e' }}
     >
       {/* Background */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, #006039, #004d2e, #006039)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, #27533e, #1c3d2d, #27533e)' }} />
 
       {/* Radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,162,39,0.05)_0%,transparent_70%)]" />
@@ -101,8 +101,8 @@ export default function BrandShowcase() {
           className="relative overflow-hidden motion-safe:block motion-reduce:hidden"
         >
           {/* Edge fade masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#006039] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#006039] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#27533e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#27533e] to-transparent z-10 pointer-events-none" />
 
           {/* Scrolling track - continuous motion, always looping right to left */}
           <div className="flex w-max animate-marquee">

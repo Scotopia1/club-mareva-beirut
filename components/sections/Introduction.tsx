@@ -95,13 +95,6 @@ const Introduction = () => {
           <div className="relative order-1 lg:order-2">
             {/* Gold accent line - draws from top to bottom */}
             <motion.div
-              initial={{ scaleY: 0 }}
-              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-gold via-gold to-gold/20 origin-top hidden lg:block"
-            />
-
-            <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}

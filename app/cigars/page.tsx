@@ -1,10 +1,9 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import VideoBackground from '@/components/ui/VideoBackground';
-import Button from '@/components/ui/Button';
 
 // Enhanced Brand Interface
 interface Brand {
@@ -195,172 +194,13 @@ const philosophyPillars = [
   }
 ];
 
-// Social Icons Components
-function HeartIcon({ filled, className = "" }: { filled?: boolean; className?: string }) {
-  return (
-    <svg
-      className={`w-6 h-6 ${className}`}
-      fill={filled ? "currentColor" : "none"}
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={filled ? 0 : 1.5}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-    </svg>
-  );
-}
-
-function CommentIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={`w-6 h-6 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
-    </svg>
-  );
-}
-
-function ShareIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={`w-6 h-6 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-    </svg>
-  );
-}
-
-function BookmarkIcon({ filled, className = "" }: { filled?: boolean; className?: string }) {
-  return (
-    <svg
-      className={`w-6 h-6 ${className}`}
-      fill={filled ? "currentColor" : "none"}
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={filled ? 0 : 1.5}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-    </svg>
-  );
-}
-
-// Share Modal Component
-function ShareModal({ brand, isOpen, onClose }: { brand: Brand; isOpen: boolean; onClose: () => void }) {
-  const [copied, setCopied] = useState(false);
-  const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/cigars#${brand.name.toLowerCase().replace(/\s+/g, '-')}`
-    : `/cigars#${brand.name.toLowerCase().replace(/\s+/g, '-')}`;
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = shareUrl;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const handleWhatsAppShare = () => {
-    const text = `Check out ${brand.name} cigars at Club Mareva Beirut! ${shareUrl}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className="bg-black-800 border border-black-900 rounded-lg p-6 max-w-sm w-full"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h3 className="text-gold font-playfair text-xl mb-4 text-center">Share {brand.name}</h3>
-
-          <div className="space-y-3">
-            <button
-              onClick={handleCopyLink}
-              className="w-full flex items-center gap-3 p-3 bg-black-900 hover:bg-gold/10 border border-black-900 hover:border-gold/30 rounded-lg transition-all duration-300"
-            >
-              <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-              </svg>
-              <span className="text-cream text-sm">{copied ? 'Link Copied!' : 'Copy Link'}</span>
-            </button>
-
-            <button
-              onClick={handleWhatsAppShare}
-              className="w-full flex items-center gap-3 p-3 bg-black-900 hover:bg-gold/10 border border-black-900 hover:border-gold/30 rounded-lg transition-all duration-300"
-            >
-              <svg className="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              <span className="text-cream text-sm">Share on WhatsApp</span>
-            </button>
-
-            {brand.website && (
-              <a
-                href={brand.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center gap-3 p-3 bg-black-900 hover:bg-gold/10 border border-black-900 hover:border-gold/30 rounded-lg transition-all duration-300"
-              >
-                <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
-                <span className="text-cream text-sm">Visit Official Website</span>
-              </a>
-            )}
-          </div>
-
-          <button
-            onClick={onClose}
-            className="mt-4 w-full py-2 text-cream/60 hover:text-cream text-sm transition-colors"
-          >
-            Cancel
-          </button>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
-// Instagram-style Brand Card Component
+// Brand Card Component
 function InstagramBrandCard({ brand, index }: { brand: Brand; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [showShareModal, setShowShareModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
-  };
-
-  const handleComment = () => {
-    // Open WhatsApp with pre-filled message about the brand
-    const message = `Hi, I'd like to learn more about ${brand.name} cigars at Club Mareva Beirut.`;
-    window.open(`https://wa.me/+96179117997?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
   return (
-    <>
       <motion.article
         ref={ref}
         id={brand.name.toLowerCase().replace(/\s+/g, '-')}
@@ -410,12 +250,12 @@ function InstagramBrandCard({ brand, index }: { brand: Brand; index: number }) {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-black-800 via-black to-black-900">
             <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]" />
-            <div className="absolute inset-0 flex items-center justify-center p-12">
+            <div className="absolute inset-0 flex items-center justify-center p-6">
               <Image
                 src={brand.logo}
                 alt={`${brand.name} logo`}
                 fill
-                className="object-contain p-16 opacity-80"
+                className="object-contain p-4 opacity-80"
               />
             </div>
             {/* Subtle gold vignette */}
@@ -425,59 +265,8 @@ function InstagramBrandCard({ brand, index }: { brand: Brand; index: number }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         </motion.div>
 
-        {/* Engagement Icons */}
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-4">
-            <motion.button
-              onClick={handleLike}
-              whileTap={{ scale: 1.3 }}
-              className="focus:outline-none"
-            >
-              <HeartIcon
-                filled={isLiked}
-                className={`transition-colors duration-200 ${isLiked ? 'text-red-500' : 'text-cream hover:text-cream/70'}`}
-              />
-            </motion.button>
-            <motion.button
-              onClick={handleComment}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-cream hover:text-cream/70 transition-colors focus:outline-none"
-            >
-              <CommentIcon />
-            </motion.button>
-            <motion.button
-              onClick={() => setShowShareModal(true)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-cream hover:text-cream/70 transition-colors focus:outline-none"
-            >
-              <ShareIcon />
-            </motion.button>
-          </div>
-          <motion.button
-            onClick={() => setIsSaved(!isSaved)}
-            whileTap={{ scale: 1.2 }}
-            className="focus:outline-none"
-          >
-            <BookmarkIcon
-              filled={isSaved}
-              className={`transition-colors duration-200 ${isSaved ? 'text-gold' : 'text-cream hover:text-cream/70'}`}
-            />
-          </motion.button>
-        </div>
-
-        {/* Likes count */}
-        {likeCount > 0 && (
-          <div className="px-4 pb-2">
-            <p className="text-cream text-sm font-semibold">
-              {likeCount} likes
-            </p>
-          </div>
-        )}
-
-        {/* Caption */}
-        <div className="px-4 pb-3">
+        {/* Bio */}
+        <div className="px-5 py-4">
           <p className="text-cream text-sm leading-relaxed">
             <span className="font-semibold">{brand.name}</span>{' '}
             {isExpanded || brand.description.length <= 150
@@ -492,45 +281,10 @@ function InstagramBrandCard({ brand, index }: { brand: Brand; index: number }) {
               </button>
             )}
           </p>
-          {brand.hashtags && (
-            <p className="text-gold/70 text-sm mt-2">
-              {brand.hashtags.join(' ')}
-            </p>
-          )}
         </div>
 
-        {/* Testimonial */}
-        {brand.testimonial && (
-          <div className="px-4 py-3 border-t border-black-900 bg-black-900/50">
-            <div className="flex items-start gap-2">
-              <span className="text-gold text-lg">❝</span>
-              <div>
-                <p className="text-cream/80 text-sm italic leading-relaxed">
-                  {brand.testimonial.quote}
-                </p>
-                <p className="text-gold text-xs mt-2">
-                  — {brand.testimonial.author}, {brand.testimonial.title}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {/* Footer */}
-        <div className="px-4 py-3 border-t border-black-900">
-          <p className="text-cream/50 text-xs">
-            View all reviews • Featured at Club Mareva
-          </p>
-        </div>
       </motion.article>
-
-      {/* Share Modal */}
-      <ShareModal
-        brand={brand}
-        isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
-      />
-    </>
   );
 }
 
