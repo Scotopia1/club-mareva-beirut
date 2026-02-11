@@ -53,7 +53,7 @@ export default function RootLayout({
         className={`${playfair.variable} antialiased bg-black text-white`}
       >
         <SmoothScroll />
-        <div className="relative z-[1] bg-black min-h-screen lg:mb-[100vh]">
+        <div className="relative z-[1] bg-black min-h-screen mb-[100vh]">
           <Navigation />
           <main>{children}</main>
         </div>

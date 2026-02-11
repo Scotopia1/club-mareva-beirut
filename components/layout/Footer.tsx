@@ -12,13 +12,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [fabVisible, setFabVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(false);
-
   useEffect(() => {
-    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -31,21 +25,16 @@ export default function Footer() {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('resize', checkDesktop);
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lastScrollY]);
-
-  // Animation props — desktop: animate on mount; mobile: animate on scroll into view
-  const trigger = isDesktop
-    ? { initial: 'hidden' as const, animate: 'visible' as const }
-    : { initial: 'hidden' as const, whileInView: 'visible' as const, viewport: { once: true } };
 
   return (
     <>
       {/* ═══ Curtain Reveal Footer ═══ */}
       <motion.footer
-        {...trigger}
+        initial="hidden"
+        animate="visible"
         variants={{
           hidden: { opacity: 0 },
           visible: {
@@ -53,7 +42,7 @@ export default function Footer() {
             transition: { staggerChildren: 0.1, delayChildren: 0.2 },
           },
         }}
-        className="lg:fixed lg:bottom-0 lg:left-0 lg:w-full lg:z-0 relative z-0 w-full min-h-screen flex flex-col bg-black-900 overflow-hidden"
+        className="fixed bottom-0 left-0 w-full z-0 min-h-screen flex flex-col bg-black-900 overflow-y-auto"
       >
         {/* ── Atmospheric Background Layers ── */}
 
