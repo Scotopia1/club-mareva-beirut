@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import UpcomingEvents, { UpcomingEventItem } from '@/components/sections/UpcomingEvents';
 
 type Category = 'All' | 'Events' | 'News';
 
@@ -20,12 +22,24 @@ export interface PostItem {
 
 interface NewsEventsClientProps {
   posts: PostItem[];
+  upcomingEvents: UpcomingEventItem[];
 }
 
 const categories: Category[] = ['All', 'Events', 'News'];
 
-export default function NewsEventsClient({ posts }: NewsEventsClientProps) {
-  const [activeCategory, setActiveCategory] = useState<Category>('All');
+export default function NewsEventsClient({ posts, upcomingEvents }: NewsEventsClientProps) {
+  return (
+    <Suspense>
+      <NewsEventsContent posts={posts} upcomingEvents={upcomingEvents} />
+    </Suspense>
+  );
+}
+
+function NewsEventsContent({ posts, upcomingEvents }: NewsEventsClientProps) {
+  const searchParams = useSearchParams();
+  const filterParam = searchParams.get('filter');
+  const initialCategory: Category = filterParam === 'Events' ? 'Events' : filterParam === 'News' ? 'News' : 'All';
+  const [activeCategory, setActiveCategory] = useState<Category>(initialCategory);
   const [visibleCount, setVisibleCount] = useState(9);
 
   const filteredPosts = activeCategory === 'All'
@@ -91,8 +105,13 @@ export default function NewsEventsClient({ posts }: NewsEventsClientProps) {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
       </section>
 
+      {/* Upcoming Events Timeline */}
+      {upcomingEvents.length > 0 && (
+        <UpcomingEvents events={upcomingEvents} />
+      )}
+
       {/* Category Filter */}
-      <section className="relative z-20 -mt-8">
+      <section className="relative z-20 mt-4">
         <div className="container mx-auto px-6">
           <motion.div
             className="bg-black-800/80 backdrop-blur-md border border-gold/20 rounded-2xl p-2 inline-flex flex-wrap gap-2 shadow-2xl"

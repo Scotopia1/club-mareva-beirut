@@ -67,7 +67,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="relative z-20 w-full bg-black overflow-hidden pt-24">
+    <main className="relative z-20 w-full overflow-hidden pt-24">
       {/* Atmospheric Background Noise */}
       <div
         className="fixed inset-0 opacity-[0.08] pointer-events-none z-0"
@@ -84,7 +84,7 @@ export default function ContactPage() {
           initial="hidden"
           animate="visible"
           variants={slideFromLeft}
-          className="relative w-full lg:w-1/2 h-[35vh] lg:h-[calc(100vh-6rem)] bg-black"
+          className="relative w-full lg:w-1/2 h-[35vh] lg:h-[calc(100vh-6rem)]"
         >
           {/* Map Container with Gold Border */}
           <div className="relative h-full w-full p-6 lg:p-12">
@@ -127,27 +127,27 @@ export default function ContactPage() {
           initial="hidden"
           animate="visible"
           variants={slideFromRight}
-          className="relative w-full lg:w-1/2 h-auto lg:h-[calc(100vh-6rem)] flex items-center justify-center p-6 lg:p-12 bg-black"
+          className="relative w-full lg:w-1/2 h-auto lg:h-[calc(100vh-6rem)] flex items-center justify-center p-6 lg:p-12"
         >
           {/* Contact Card */}
           <motion.div
             variants={containerVariants}
-            className="relative w-full max-w-[500px] bg-black-800 border border-gold/30 p-8 md:p-12 shadow-[0_0_40px_rgba(201,162,39,0.1)]"
+            className="relative w-full max-w-[420px] bg-black-800 border border-gold/30 p-6 md:p-8 shadow-[0_0_40px_rgba(201,162,39,0.1)]"
           >
             {/* Subtle Inner Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-gold/3 pointer-events-none" />
 
             {/* Content Container */}
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 space-y-5">
               {/* Logo and Brand */}
-              <motion.div variants={fadeIn} className="text-center space-y-3">
-                <h1 className="font-playfair text-4xl md:text-5xl font-bold tracking-wider text-cream">
+              <motion.div variants={fadeIn} className="text-center space-y-2">
+                <h1 className="font-playfair text-3xl md:text-4xl font-bold tracking-wider text-cream">
                   CLUB MAREVA
                 </h1>
-                <h2 className="font-playfair text-2xl md:text-3xl font-bold tracking-wider text-gold">
+                <h2 className="font-playfair text-xl md:text-2xl font-bold tracking-wider text-gold">
                   BEIRUT
                 </h2>
-                <p className="font-playfair text-sm md:text-base italic text-cream/80 mt-4">
+                <p className="font-playfair text-sm italic text-cream/80 mt-3">
                   A sanctuary that ignites the senses
                 </p>
               </motion.div>
@@ -166,9 +166,9 @@ export default function ContactPage() {
               </motion.div>
 
               {/* WhatsApp Contacts */}
-              <motion.div variants={fadeIn} className="space-y-3 text-center">
-                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-3 inline-flex items-center justify-center gap-2">
-                  <Phone className="w-4 h-4" />
+              <motion.div variants={fadeIn} className="space-y-2 text-center">
+                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-2 inline-flex items-center justify-center gap-2">
+                  <Phone className="w-3.5 h-3.5" />
                   WhatsApp
                 </h3>
                 <Link
@@ -196,9 +196,9 @@ export default function ContactPage() {
               </motion.div>
 
               {/* Opening Hours */}
-              <motion.div variants={fadeIn} className="space-y-2 text-center">
-                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-3 inline-flex items-center justify-center gap-2">
-                  <Clock className="w-4 h-4" />
+              <motion.div variants={fadeIn} className="space-y-1.5 text-center">
+                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-2 inline-flex items-center justify-center gap-2">
+                  <Clock className="w-3.5 h-3.5" />
                   Hours
                 </h3>
                 <div>
@@ -212,8 +212,8 @@ export default function ContactPage() {
               </motion.div>
 
               {/* Social Media */}
-              <motion.div variants={fadeIn} className="space-y-3 text-center">
-                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-3">
+              <motion.div variants={fadeIn} className="space-y-2 text-center">
+                <h3 className="font-playfair text-xs tracking-widest text-gold/80 uppercase mb-2">
                   Follow Us
                 </h3>
                 <div className="flex justify-center gap-6">
@@ -268,7 +268,7 @@ export default function ContactPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                    className="relative w-full bg-gold text-black py-4 px-6 font-playfair font-medium tracking-wide uppercase text-sm md:text-base text-center overflow-hidden shadow-[0_0_20px_rgba(201,162,39,0.25)] transition-shadow duration-300 group-hover:shadow-[0_0_40px_rgba(201,162,39,0.4)]"
+                    className="relative w-full bg-gold text-black py-3 px-5 font-playfair font-medium tracking-wide uppercase text-sm text-center overflow-hidden shadow-[0_0_20px_rgba(201,162,39,0.25)] transition-shadow duration-300 group-hover:shadow-[0_0_40px_rgba(201,162,39,0.4)]"
                   >
                     {/* Shimmer Effect */}
                     <motion.span

@@ -61,6 +61,38 @@ export interface Page {
   };
 }
 
+export interface UpcomingEvent {
+  id: string;
+  title: string;
+  date: string;
+  category: string;
+  description: string;
+  image: string;
+  featured: boolean;
+}
+
+export interface SignatureContentSection {
+  heading?: string;
+  text: string;
+  image?: string;
+  imageAlt?: string;
+}
+
+export interface SignatureItem {
+  id: string;
+  title: string;
+  category: string;
+  tagline: string;
+  description: string;
+  image: string;
+  gallery: string[];
+  contentSections?: SignatureContentSection[];
+  specs: { label: string; value: string }[];
+  collaborators: string;
+  postSlug: string;
+  order: number;
+}
+
 export interface Category {
   id: number;
   name: string;
@@ -76,6 +108,8 @@ let postsCache: Post[] | null = null;
 let pagesCache: Page[] | null = null;
 let categoriesCache: Category[] | null = null;
 let imageManifestCache: ImageManifest | null = null;
+let upcomingEventsCache: UpcomingEvent[] | null = null;
+let signaturesCache: SignatureItem[] | null = null;
 
 async function loadJSON<T>(filePath: string): Promise<T | null> {
   try {
@@ -218,9 +252,50 @@ export async function getAuthors(): Promise<Author[]> {
   return data?.authors || [];
 }
 
+export async function getUpcomingEvents(): Promise<UpcomingEvent[]> {
+  if (upcomingEventsCache) {
+    return upcomingEventsCache;
+  }
+
+  const filePath = join(DATA_BASE, 'upcoming-events.json');
+  const events = await loadJSON<UpcomingEvent[]>(filePath);
+
+  if (!events) {
+    return [];
+  }
+
+  const now = new Date();
+  const upcoming = events
+    .filter(e => new Date(e.date) > now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  upcomingEventsCache = upcoming;
+  return upcoming;
+}
+
+export async function getUpcomingEventById(id: string): Promise<UpcomingEvent | null> {
+  const events = await getUpcomingEvents();
+  return events.find(e => e.id === id) || null;
+}
+
+export async function getAllUpcomingEventIds(): Promise<string[]> {
+  const events = await getUpcomingEvents();
+  return events.map(e => e.id);
+}
+
+export async function getSignatures(): Promise<SignatureItem[]> {
+  if (signaturesCache) return signaturesCache;
+  const filePath = join(DATA_BASE, 'signatures.json');
+  const items = await loadJSON<SignatureItem[]>(filePath);
+  signaturesCache = (items || []).sort((a, b) => a.order - b.order);
+  return signaturesCache;
+}
+
 export function clearCache(): void {
   postsCache = null;
   pagesCache = null;
   categoriesCache = null;
   imageManifestCache = null;
+  upcomingEventsCache = null;
+  signaturesCache = null;
 }

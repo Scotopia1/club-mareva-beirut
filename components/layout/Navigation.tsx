@@ -1,90 +1,48 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Home, BookOpen, Calendar, Mail, ChevronRight } from 'lucide-react';
+import { Suspense, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Home, BookOpen, Calendar, Mail, Newspaper, Award } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 type NavLink = {
   name: string;
   href: string;
   external?: boolean;
   icon?: React.ComponentType<{ className?: string; strokeWidth?: number }>;
-  hasMegaMenu?: boolean;
 };
 
 const navLinks: NavLink[] = [
   { name: 'HOME', href: '/', icon: Home },
-  { name: 'CIGARS', href: '/cigars', icon: BookOpen, hasMegaMenu: true },
-  { name: 'EVENTS', href: '/news-and-events', icon: Calendar, hasMegaMenu: true },
+  { name: 'CIGARS', href: '/cigars', icon: BookOpen },
+  { name: 'SIGNATURE', href: '/our-signature', icon: Award },
+  { name: 'EVENTS', href: '/news-and-events?filter=Events', icon: Calendar },
+  { name: 'NEWS', href: '/news-and-events?filter=News', icon: Newspaper },
   { name: 'CONTACT', href: '/contact', icon: Mail },
 ];
 
 const bottomNavLinks: NavLink[] = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Cigars', href: '/cigars', icon: BookOpen },
-  { name: 'Events', href: '/news-and-events', icon: Calendar },
+  { name: 'Signature', href: '/our-signature', icon: Award },
+  { name: 'Events', href: '/news-and-events?filter=Events', icon: Calendar },
+  { name: 'News', href: '/news-and-events?filter=News', icon: Newspaper },
   { name: 'Contact', href: '/contact', icon: Mail },
 ];
 
-// Mega menu content
-const megaMenuContent = {
-  CIGARS: {
-    featured: {
-      title: 'Our Humidor',
-      description: '220+ premium varieties from around the world',
-      image: '/images/clubmarevabeirut/2025/ANGELO20251114-L0034.jpg',
-    },
-    links: [
-      { name: 'Habanos (Cuba)', href: '/cigars' },
-      { name: 'Davidoff', href: '/cigars' },
-      { name: 'Drew Estate', href: '/cigars' },
-      { name: 'View All Brands', href: '/cigars', featured: true },
-    ],
-  },
-  EVENTS: {
-    featured: {
-      title: 'News & Events',
-      description: 'Exclusive tastings and members-only gatherings',
-      image: '/images/clubmarevabeirut/2023/Pictures-4.jpg',
-    },
-    links: [
-      { name: 'Latest News', href: '/news-and-events' },
-      { name: 'Tasting Events', href: '/news-and-events' },
-      { name: 'Special Occasions', href: '/news-and-events' },
-      { name: 'View All Events', href: '/news-and-events', featured: true },
-    ],
-  },
-};
-
-// Animation variants
-const megaMenuVariants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.05 },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
-const megaMenuItemVariants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
-};
-
-
 export default function Navigation() {
+  return (
+    <Suspense>
+      <NavigationInner />
+    </Suspense>
+  );
+}
+
+function NavigationInner() {
   const [scrollState, setScrollState] = useState<'top' | 'mid' | 'solid'>('top');
-  const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const pathname = usePathname();
-  const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,24 +59,6 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleMegaMenuEnter = (menuName: string) => {
-    if (megaMenuTimeoutRef.current) {
-      clearTimeout(megaMenuTimeoutRef.current);
-    }
-    megaMenuTimeoutRef.current = setTimeout(() => {
-      setActiveMegaMenu(menuName);
-    }, 150);
-  };
-
-  const handleMegaMenuLeave = () => {
-    if (megaMenuTimeoutRef.current) {
-      clearTimeout(megaMenuTimeoutRef.current);
-    }
-    megaMenuTimeoutRef.current = setTimeout(() => {
-      setActiveMegaMenu(null);
-    }, 300);
-  };
 
   return (
     <>
@@ -161,31 +101,7 @@ export default function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => (
-                <div
-                  key={link.name}
-                  className="relative"
-                  onMouseEnter={() => link.hasMegaMenu && handleMegaMenuEnter(link.name)}
-                  onMouseLeave={handleMegaMenuLeave}
-                  onFocus={() => link.hasMegaMenu && handleMegaMenuEnter(link.name)}
-                  onBlur={handleMegaMenuLeave}
-                  tabIndex={link.hasMegaMenu ? 0 : undefined}
-                  role={link.hasMegaMenu ? "button" : undefined}
-                  aria-haspopup={link.hasMegaMenu ? "true" : undefined}
-                  aria-expanded={link.hasMegaMenu ? (activeMegaMenu === link.name) : undefined}
-                >
-                  <NavLinkItem link={link} pathname={pathname} />
-
-                  {/* Mega Menu */}
-                  <AnimatePresence>
-                    {link.hasMegaMenu && activeMegaMenu === link.name && (
-                      <MegaMenu
-                        content={megaMenuContent[link.name as keyof typeof megaMenuContent]}
-                        onMouseEnter={() => handleMegaMenuEnter(link.name)}
-                        onMouseLeave={handleMegaMenuLeave}
-                      />
-                    )}
-                  </AnimatePresence>
-                </div>
+                <NavLinkItem key={link.name} link={link} pathname={pathname} />
               ))}
             </div>
 
@@ -215,7 +131,14 @@ export default function Navigation() {
 }
 
 function NavLinkItem({ link, pathname }: { link: NavLink; pathname: string }) {
-  const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+  const searchParams = useSearchParams();
+  const [linkPath, linkQuery] = link.href.split('?');
+  const linkFilter = linkQuery ? new URLSearchParams(linkQuery).get('filter') : null;
+  const currentFilter = searchParams.get('filter');
+
+  const isActive = linkFilter
+    ? pathname === linkPath && currentFilter === linkFilter
+    : pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
 
   const content = (
     <span className={`relative block px-4 py-2 font-playfair text-xs tracking-[0.15em] transition-colors duration-200 ${
@@ -253,83 +176,9 @@ function NavLinkItem({ link, pathname }: { link: NavLink; pathname: string }) {
   );
 }
 
-function MegaMenu({
-  content,
-  onMouseEnter,
-  onMouseLeave,
-}: {
-  content: {
-    featured: { title: string; description: string; image: string };
-    links: { name: string; href: string; featured?: boolean }[];
-  };
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-}) {
-  return (
-    <motion.div
-      variants={megaMenuVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Escape') onMouseLeave(); }}
-      className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-    >
-      <div className="bg-black/95 backdrop-blur-md border border-gold/20 rounded-sm shadow-2xl min-w-[400px] overflow-hidden">
-        <div className="grid grid-cols-2 gap-0">
-          {/* Featured Image */}
-          <div className="relative h-48 overflow-hidden">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${content.featured.image})` }}
-            />
-            <div className="absolute inset-0 bg-black/60" />
-            <div className="relative h-full flex flex-col justify-end p-5">
-              <motion.h4
-                variants={megaMenuItemVariants}
-                className="font-playfair text-lg text-cream mb-1"
-              >
-                {content.featured.title}
-              </motion.h4>
-              <motion.p
-                variants={megaMenuItemVariants}
-                className="font-playfair text-xs text-cream/70"
-              >
-                {content.featured.description}
-              </motion.p>
-            </div>
-          </div>
-
-          {/* Links */}
-          <div className="p-5 space-y-2">
-            {content.links.map((link) => (
-              <motion.div key={link.name} variants={megaMenuItemVariants}>
-                <Link
-                  href={link.href}
-                  className={`group flex items-center gap-2 py-2 font-playfair text-sm transition-colors duration-200 ${
-                    link.featured
-                      ? 'text-gold hover:text-gold-light'
-                      : 'text-cream/80 hover:text-gold'
-                  }`}
-                >
-                  {link.name}
-                  <ChevronRight
-                    className={`w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ${
-                      link.featured ? 'text-gold' : ''
-                    }`}
-                  />
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 function MobileBottomNav({ links, pathname }: { links: NavLink[]; pathname: string }) {
+  const searchParams = useSearchParams();
+  const currentFilter = searchParams.get('filter');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -359,7 +208,11 @@ function MobileBottomNav({ links, pathname }: { links: NavLink[]; pathname: stri
         <div className="flex items-center justify-around px-2 py-2">
           {links.map((link) => {
             const Icon = link.icon;
-            const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+            const [linkPath, linkQuery] = link.href.split('?');
+            const linkFilter = linkQuery ? new URLSearchParams(linkQuery).get('filter') : null;
+            const isActive = linkFilter
+              ? pathname === linkPath && currentFilter === linkFilter
+              : pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
 
             return (
               <Link

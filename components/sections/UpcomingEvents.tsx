@@ -4,35 +4,46 @@ import { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface EventItem {
-  id: number | string;
+export interface UpcomingEventItem {
+  id: string;
   title: string;
   date: string;
   category: string;
+  description: string;
   image: string;
-  slug: string;
-  type: 'upcoming' | 'event' | 'news';
+  featured: boolean;
+  month: string;       // "MAR", "APR" - pre-computed
+  day: string;         // "15", "22" - pre-computed
+  displayDate: string; // "Saturday, March 15" - pre-computed
 }
 
-interface EventsCarouselProps {
-  events: EventItem[];
+interface UpcomingEventsProps {
+  events: UpcomingEventItem[];
 }
 
-const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
+const UpcomingEventCard = ({
+  event,
+  index,
+  isFirst,
+}: {
+  event: UpcomingEventItem;
+  index: number;
+  isFirst: boolean;
+}) => {
   const [isHovered, setIsHovered] = useState(false);
-  const isUpcoming = event.type === 'upcoming';
 
-  const cardContent = (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative h-full"
-    >
+  return (
+    <Link href={`/news-and-events/upcoming/${event.id}`}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative h-full"
+      >
       <div
         className="block relative h-[400px] md:h-[500px] group overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
@@ -43,7 +54,7 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
           <motion.div
             animate={{
               scale: isHovered ? 1.12 : 1,
-              filter: isHovered ? 'brightness(1.1)' : 'brightness(1)'
+              filter: isHovered ? 'brightness(1.1)' : 'brightness(1)',
             }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="relative w-full h-full"
@@ -59,10 +70,15 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
               />
             ) : (
               <>
+                {/* Enhanced gradient placeholder background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-black-800 via-green-dark to-black" />
+
+                {/* Pattern overlay for visual interest */}
                 <div className="absolute inset-0 opacity-30">
                   <div className="w-full h-full bg-[radial-gradient(circle_at_60%_40%,rgba(201,162,39,0.2),transparent_60%)]" />
                 </div>
+
+                {/* Decorative cigar pattern */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-10">
                   <div className="w-32 h-32 border border-gold/30 rotate-45" />
                 </div>
@@ -74,38 +90,60 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
           </motion.div>
         </div>
 
-        {/* Type Badge — top-left */}
+        {/* Date Badge — top-left */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: index * 0.1 + 0.2, duration: 0.5 }}
-          className="absolute top-6 left-6 z-20"
+          transition={{ delay: index * 0.1 + 0.15, duration: 0.5 }}
+          className="absolute top-6 left-6 z-20 bg-black/60 backdrop-blur-sm border border-gold/30 px-4 py-3 flex flex-col items-center"
         >
-          {isUpcoming ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-gold via-gold-light to-gold text-black text-xs font-playfair font-bold tracking-[0.2em] uppercase shadow-[0_0_20px_rgba(201,162,39,0.4)]">
-              <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse" />
-              Upcoming
-            </span>
-          ) : (
-            <span className="inline-flex items-center px-4 py-1.5 backdrop-blur-sm bg-gold/90 text-black text-xs font-playfair font-semibold tracking-widest uppercase">
-              {event.category}
-            </span>
-          )}
+          <span className="font-playfair text-xs text-gold tracking-[0.2em] uppercase leading-none mb-1">
+            {event.month}
+          </span>
+          <span className="font-playfair text-3xl font-bold text-cream leading-none">
+            {event.day}
+          </span>
         </motion.div>
 
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 z-10">
-          {/* Date with icon */}
+        {/* "NEXT" Badge — top-right, first card only */}
+        {isFirst && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 + 0.2, duration: 0.5 }}
+            className="absolute top-6 right-6 z-20"
+          >
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-gold via-gold-light to-gold px-3 py-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+              <span
+                className="font-playfair text-black font-bold tracking-[0.2em] uppercase"
+                style={{ fontSize: '10px' }}
+              >
+                NEXT
+              </span>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Category Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 + 0.25, duration: 0.5 }}
+          className="absolute bottom-0 left-0 right-0 p-8 z-10"
+        >
+          {/* Display date with calendar icon */}
           <motion.div
             animate={{ opacity: isHovered ? 1 : 0.8 }}
             className="flex items-center gap-2 mb-3"
           >
             <Calendar className="w-4 h-4 text-gold" />
             <span className="font-playfair text-gold text-sm tracking-wider uppercase">
-              {event.date}
+              {event.displayDate}
             </span>
           </motion.div>
 
+          {/* Title */}
           <motion.h3
             animate={{ y: isHovered ? -8 : 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -114,20 +152,17 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
             {event.title}
           </motion.h3>
 
-          {/* Read more indicator on hover — only for linked cards */}
-          {!isUpcoming && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-2 text-gold font-playfair text-sm tracking-wider uppercase"
-            >
-              <span>View Details</span>
-              <ArrowRight className="w-4 h-4" />
-            </motion.div>
-          )}
+          {/* Description — fades in on hover */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 6 }}
+            transition={{ duration: 0.3 }}
+            className="font-playfair text-cream/70 text-sm line-clamp-2 mb-1"
+          >
+            {event.description}
+          </motion.p>
 
-          {/* Hover line indicator */}
+          {/* Bottom accent line — scaleX 0→1 on hover from origin-left */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: isHovered ? 1 : 0 }}
@@ -135,27 +170,14 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => {
             className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-gold via-gold-light to-gold origin-left"
             style={{ width: '100%' }}
           />
-        </div>
+        </motion.div>
       </div>
-    </motion.div>
-  );
-
-  if (isUpcoming) {
-    return (
-      <Link href={`/news-and-events/upcoming/${event.id}`}>
-        {cardContent}
-      </Link>
-    );
-  }
-
-  return (
-    <Link href={`/news-and-events/${event.slug}`}>
-      {cardContent}
+      </motion.div>
     </Link>
   );
 };
 
-const EventsCarousel = ({ events }: EventsCarouselProps) => {
+const UpcomingEvents = ({ events }: UpcomingEventsProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -174,7 +196,10 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback((index: number) => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
+  const scrollTo = useCallback(
+    (index: number) => emblaApi && emblaApi.scrollTo(index),
+    [emblaApi]
+  );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -188,16 +213,7 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
     onSelect();
   }, [emblaApi, onSelect]);
 
-  if (events.length === 0) {
-    return (
-      <section className="relative w-full bg-black py-20 md:py-28">
-        <div className="max-w-xl mx-auto px-6 text-center">
-          <p className="font-playfair text-cream/60 text-lg mb-6">No upcoming events — check back soon</p>
-          <a href="/contact" className="font-playfair text-gold text-sm tracking-wider uppercase hover:text-gold-light transition-colors">Contact Us</a>
-        </div>
-      </section>
-    );
-  }
+  if (events.length === 0) return null;
 
   return (
     <section className="relative w-full bg-black py-20 md:py-28 overflow-hidden">
@@ -216,7 +232,7 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
           transition={{ delay: 0.1, duration: 0.5 }}
           className="font-playfair text-xs tracking-[0.3em] uppercase text-gold mb-8 text-center"
         >
-          Latest Events
+          Upcoming Events
         </motion.p>
 
         {/* Carousel Container */}
@@ -246,7 +262,7 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
                   key={event.id}
                   className="flex-[0_0_100%] md:flex-[0_0_calc(50%-16px)] lg:flex-[0_0_calc(33.333%-22px)] min-w-0"
                 >
-                  <EventCard event={event} index={index} />
+                  <UpcomingEventCard event={event} index={index} isFirst={index === 0} />
                 </div>
               ))}
             </div>
@@ -274,7 +290,7 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
               />
               {selectedIndex === index && (
                 <motion.div
-                  layoutId="activeIndicator"
+                  layoutId="upcomingActiveIndicator"
                   className="absolute inset-0 rounded-full border-2 border-gold"
                   initial={false}
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
@@ -284,26 +300,6 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
             </motion.button>
           ))}
         </div>
-
-        {/* View All Events CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="flex justify-center mt-12"
-        >
-          <Link href="/news-and-events">
-            <motion.span
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="group inline-flex items-center gap-3 px-8 py-4 border border-gold/50 text-gold font-playfair font-medium tracking-wider uppercase text-sm transition-all duration-300 hover:border-gold hover:bg-gold/10"
-            >
-              View All Events
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.span>
-          </Link>
-        </motion.div>
       </div>
 
       {/* Bottom decorative line */}
@@ -312,4 +308,4 @@ const EventsCarousel = ({ events }: EventsCarouselProps) => {
   );
 };
 
-export default EventsCarousel;
+export default UpcomingEvents;

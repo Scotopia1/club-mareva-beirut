@@ -1,8 +1,9 @@
-import { getAllPosts } from '@/lib/content';
+import { getAllPosts, getUpcomingEvents } from '@/lib/content';
 import NewsEventsClient from './NewsEventsClient';
 
 export default async function NewsAndEventsPage() {
   const posts = await getAllPosts();
+  const upcomingEvents = await getUpcomingEvents();
 
   // Map to client-safe format
   const mappedPosts = posts.map(post => ({
@@ -22,5 +23,22 @@ export default async function NewsAndEventsPage() {
     readTime: `${Math.ceil(post.content.text.split(' ').length / 200)} min`
   }));
 
-  return <NewsEventsClient posts={mappedPosts} />;
+  const mappedUpcoming = upcomingEvents.map(event => ({
+    id: event.id,
+    title: event.title,
+    date: event.date,
+    category: event.category,
+    description: event.description,
+    image: event.image,
+    featured: event.featured,
+    month: new Date(event.date).toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
+    day: new Date(event.date).getDate().toString(),
+    displayDate: new Date(event.date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    }),
+  }));
+
+  return <NewsEventsClient posts={mappedPosts} upcomingEvents={mappedUpcoming} />;
 }
