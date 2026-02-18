@@ -69,7 +69,7 @@ const brands: Brand[] = [
     origin: "Dominican Republic",
     established: "Est. 2016",
     description: "Hiram & Solomon Cigars are all about bringing Mason brothers together in the harmony of a good cigar. In the beginning, WB Kashouty and Brother George Dakrat, the founders of Hiram & Solomon, established their first location in the beauty of the Dominican Republic, before moving shortly after to Nicaragua, harvesting shockingly delicious and full-bodied tobacco to rival the flavors and quality of the world's best cigar brands.",
-    logo: "/images/external/Hiram-Solomon-Logo.png",
+    logo: "/images/external/hiram-solomon.png",
     hashtags: ["#HiramAndSolomon", "#MasonicHeritage", "#Craftsmanship"],
     testimonial: {
       quote: "The Traveling Man is a masterpiece. Finding it at Club Mareva was a revelation—truly a hidden gem.",
@@ -83,7 +83,7 @@ const brands: Brand[] = [
     origin: "Dominican Republic",
     established: "Est. 2005",
     description: "The main goal of Patrik J. Martin when he created his brand Patoro in 2001 was and still is to offer cigar aficionados positive emotions during moments of intense pleasure, enjoyment and relaxation thanks to the excellence of his cigars. While the tobacco used in Patoro cigars is grown on the best soils of the Dominican Republic, the seeds are essentially of Cuban origin and the result of long development and research.",
-    logo: "/images/external/patoro.jpg",
+    logo: "/images/external/logo-patoro.png",
     hashtags: ["#Patoro", "#CubanSeed", "#Elegance"],
     testimonial: {
       quote: "Patoro's Gran Añejo is pure silk. The humidor at Club Mareva keeps them in perfect condition.",
@@ -125,7 +125,7 @@ const brands: Brand[] = [
     origin: "Dominican/Costa Rica",
     established: "Est. 2014",
     description: "Casdagli Cigars was founded in 1997, but the history starts in the 1800s when the Casdagli family started trading grain, tobacco, cotton, and breeding of Arabian horses. The original production of Casdagli Cigars in 1990s was produced in Cuba, 100% hand rolled by the master torcedor Carlos Valdez Mosquera, but on Carlos's retirement in 2013 the search for a new trustworthy producer led to the discovery of the newly opened Kelner Boutique Factory in the Dominican Republic. One line of Casdagli cigars is made in Costa Rica: The Daughters of the Wind. These cigars are hand crafted in Costa Rica by Don Olman Guzman. These blends are dominated by the rich flavours emanating from Peru, Ecuador, and Nicaragua. \"The Daughters of the Wind\" is a famous Arabian poem written in the 6th century inspired by the beauty of Bedouin horses. In the early 1900s Demy & Alick Casdagli purchased the Sheikh Obeyd stables just outside Cairo and became celebrated breeders of Arabian racehorses. They gained success with breeding the Dahman strain with a famous mare called Bint Durra. \"The Dahman is a very rare breed famed for its strength, elegance and refinement.\"",
-    logo: "/images/external/casdagli-logo.jpg",
+    logo: "/images/external/casdagli-cigars-logo.png",
     hashtags: ["#Casdagli", "#BritishHeritage", "#Refined"],
     testimonial: {
       quote: "Casdagli's Daughters of the Wind is exceptional. Club Mareva introduced me to this brand—forever grateful.",
@@ -139,7 +139,7 @@ const brands: Brand[] = [
     origin: "Dominican Republic",
     established: "Est. 2016",
     description: "The Saga Cigars try to tell stories with their lines. In fact, the cigar boxes they come in look like very rustic books or tomes with each line holding a new 'chapter' of flavors. The Saga Short Tales are made at the De Los Reyes Cigars factory in the Dominican Republic and saw their debut in 2016 thanks to the young Nirka Reyes who took over her father's company recently.",
-    logo: "/images/external/saga-cigars.jpg",
+    logo: "/images/external/SAGA.png",
     hashtags: ["#SagaCigars", "#ExceptionalValue", "#Quality"],
     testimonial: {
       quote: "Perfect for a quick smoke break. Saga delivers quality at an accessible price point.",
@@ -153,7 +153,7 @@ const brands: Brand[] = [
     origin: "Dominican Republic",
     established: "Est. 2018",
     description: "Influenced by legends in the cigar world, Hendrik Kelner always dreamed of opening an independently owned cigar factory, enabling him to create unique cigar blends with his own personal touch. After almost 20 years of working with his father Henke, Hendrik's dream, Kelner Boutique Factory (KBF), has finally become a reality and opened in San Jose, Costa Rica. Smoking Jacket is a new cigar brand released in the US market in September of 2013. Only 75 cigar stores will carry them as supply is extremely limited. The line consists of 4 cigar sizes, each with its own blend to offer a unique smoking experience.",
-    logo: "/images/external/smoking-jacket-logo.jpg",
+    logo: "/images/external/Smoking_Jacket_Cigars_logo.png",
     hashtags: ["#SmokingJacket", "#ModernBoutique", "#Innovation"],
     testimonial: {
       quote: "Hendrik Jr.'s vision shines through every blend. A must-try for any serious aficionado.",
@@ -248,21 +248,16 @@ function InstagramBrandCard({ brand, index }: { brand: Brand; index: number }) {
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-black-800 via-black to-black-900">
-            <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]" />
+          <div className="absolute inset-0 bg-white">
             <div className="absolute inset-0 flex items-center justify-center p-6">
               <Image
                 src={brand.logo}
                 alt={`${brand.name} logo`}
                 fill
-                className="object-contain p-4 opacity-80"
+                className="object-contain p-8"
               />
             </div>
-            {/* Subtle gold vignette */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(201,162,39,0.05)_100%)]" />
           </div>
-          {/* Gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         </motion.div>
 
         {/* Bio */}

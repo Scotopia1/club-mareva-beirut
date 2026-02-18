@@ -9,13 +9,13 @@ const brands = [
   { name: 'Habanos', logo: '/images/external/habanos-sa-logo-vector.png' },
   { name: 'Davidoff', logo: '/images/external/davidoff_cigars_logo.png' },
   { name: 'Caldwell', logo: '/images/external/7085500fef0c5d55f740aa2b82a20d69_Caldwell-Cigar-Co-logo.jpg' },
-  { name: 'Hiram & Solomon', logo: '/images/external/Hiram-Solomon-Logo.png' },
-  { name: 'Patoro', logo: '/images/external/patoro.jpg' },
+  { name: 'Hiram & Solomon', logo: '/images/external/hiram-solomon.png' },
+  { name: 'Patoro', logo: '/images/external/logo-patoro.png' },
   { name: 'Drew Estate', logo: '/images/external/drew-estate-logo.svg' },
   { name: 'Rocky Patel', logo: '/images/external/rocky-patel-logo.png' },
-  { name: 'Casdagli', logo: '/images/external/casdagli-logo.jpg' },
-  { name: 'Saga', logo: '/images/external/saga-cigars.jpg' },
-  { name: 'Smoking Jacket', logo: '/images/external/smoking-jacket-logo.jpg' },
+  { name: 'Casdagli', logo: '/images/external/casdagli-cigars-logo.png' },
+  { name: 'Saga', logo: '/images/external/SAGA.png' },
+  { name: 'Smoking Jacket', logo: '/images/external/Smoking_Jacket_Cigars_logo.png' },
 ];
 
 function LogoItem({ brand }: { brand: { name: string; logo: string } }) {

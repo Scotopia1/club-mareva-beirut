@@ -15,7 +15,7 @@ function PullQuote({ text, attribution }: { text: string; attribution?: string }
       initial={{ opacity: 0, scale: 0.95 }}
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="relative my-12 md:my-16 py-8 px-6 md:px-12 border-y border-gold/30 md:border-y-0 md:border-l-2 md:border-gold md:pl-6"
+      className="relative my-12 md:my-16 py-8 px-6 md:px-12 border-y border-gold/30 md:border-y-0"
     >
       {/* Decorative quote marks */}
       <span className="absolute top-0 left-4 md:left-8 text-6xl md:text-8xl text-gold/20 font-playfair leading-none select-none">
